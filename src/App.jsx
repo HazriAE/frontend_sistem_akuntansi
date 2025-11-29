@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from "./layouts/Layouts.jsx"
 import Dashboard from "./Pages/Dashboard.jsx"
 import AccountsList from './components/accounts/AccountsList.jsx';
+import Customer from './Pages/Customer.jsx';
 
 // import Customer from './pages/Customer';
 // import SupplierList from './pages/Supplier/SupplierList';
@@ -21,8 +22,8 @@ function App() {
         
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* <Route path="/customer" element={<Customer />} />
-          
+          <Route path="/customer/list" element={<Customer />} />
+          {/*
           <Route path="/supplier/list" element={<SupplierList />} />
           <Route path="/supplier/add" element={<SupplierAdd />} />
           <Route path="/supplier/category" element={<SupplierCategory />} />
