@@ -15,6 +15,7 @@ const SideBar = () => {
     setActiveMenu(item.id);
     navigate(item.path);
   };
+  
   useEffect(() => {
   const findActiveMenu = () => {
     for (const menu of menuData) {
