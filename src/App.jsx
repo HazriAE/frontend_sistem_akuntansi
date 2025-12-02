@@ -10,9 +10,16 @@ import Customer from './Pages/Customer';
 // import TransactionReturn from './pages/Transaction/TransactionReturn';
 // import AccountsCategory from './pages/Accounts/AccountsCategory';
 // import JournalEntry from './pages/Accounts/JournalEntry';
-// import Reports from './pages/Reports';
 // import Settings from './pages/Settings';
 import AccountsList from "./components/accounts/AccountsList";
+import JurnalUmum from './Pages/JurnalUmum';
+import JournalEntryForm from './Pages/JournalEntryForm';
+import ProfitLoss from './Pages/Reports/ProfitLoss';
+import Overviews from './Pages/Reports/Overviews';
+import TrialBalance from './Pages/Reports/NeracaSaldo';
+import LaporanJurnal from './Pages/Reports/LaporanJurnal';
+import BukuBesarTable from './Pages/Reports/BukuBesarTable';
+import NeracaSaldo from './Pages/Reports/NeracaSaldo';
 
 function App() {
   return (
@@ -23,6 +30,15 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/customer" element={<Customer />} />
+          <Route path="/jurnal_entries" element={<JurnalUmum />} />
+          <Route path="/journal_entries/new" element={<JournalEntryForm />} />
+
+          <Route path="/reports" element={<Overviews />} />
+          <Route path="/reports/profit-loss" element={<ProfitLoss />} />
+          <Route path='/reports/jurnal-umum' element={<LaporanJurnal />} />
+          <Route path='/reports/neraca-saldo' element={<NeracaSaldo />} />
+          <Route path='/reports/buku-besar' element={<BukuBesarTable />} />
+
           
           {/* Supplier Routes - Path utama langsung ke list */}
           {/* <Route path="/supplier" element={<SupplierList />} />
@@ -39,7 +55,6 @@ function App() {
           {/* <Route path="/accounts/kategori" element={<AccountsCategory />} />
           <Route path="/accounts/jurnal_umum" element={<JournalEntry />} /> */}
           
-          {/* <Route path="/reports" element={<Reports />} /> */}
           {/* <Route path="/settings" element={<Settings />} /> */}
         </Route>
 

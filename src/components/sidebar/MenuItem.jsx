@@ -7,7 +7,7 @@ const MenuItem = ({ item, isActive, onClick }) => {
     <li className="list-none">
       <button
         onClick={() => onClick(item)}
-        className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-base-200 ${
+        className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-primary ${
           isActive === item.id ? 'bg-primary text-primary-content font-semibold' : 'text-base-content'
         }`}
       >

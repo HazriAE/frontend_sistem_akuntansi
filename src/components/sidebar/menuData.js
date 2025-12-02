@@ -5,7 +5,8 @@ import {
   MdShoppingCart, 
   MdAssessment, 
   MdSettings,
-  MdAccountBalance
+  MdAccountBalance,
+  MdLibraryBooks
 } from 'react-icons/md';
 
 // Menu utama tanpa submenu dropdown
@@ -36,14 +37,9 @@ export const menuData = [
   },
   {
     id: 4,
-    label: "Transaksi",
-    icon: MdShoppingCart,
-    path: "/transaction",
-    tabs: [
-      { id: 41, label: "Pembelian", path: "/transaction/purchase" },
-      { id: 42, label: "Penjualan", path: "/transaction/sales" },
-      { id: 43, label: "Retur", path: "/transaction/return" }
-    ]
+    label: "Jurnal Entries",
+    icon: MdLibraryBooks,
+    path: "/jurnal_entries",
   },
   {
     id: 5,
@@ -60,7 +56,14 @@ export const menuData = [
     id: 6,
     label: "Laporan",
     icon: MdAssessment,
-    path: "/reports"
+    path: "/reports",
+    tabs: [
+      { id: 61, label: "Overview", path: "/reports" },
+      // { id: 62, label: "Penjualan", path: "/"}
+      // { id: 63, label: "Neraca Saldo", path: "/reports/neraca-saldo" },
+      // { id: 64, label: "Jurnal Umum", path: "/reports/jurnal-umum" },
+      // { id: 65, label: "Laba Rugi", path: "/reports/profit-loss" }
+    ]
   },
   {
     id: 7,
