@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from "./layouts/Layouts";
-import Dashboard from './pages/Dashboard';
+import Dashboard from './Pages/Dashboard';
 import Customer from './Pages/Customer';
 // import SupplierList from './pages/Supplier/SupplierList';
 // import SupplierAdd from './pages/Supplier/SupplierAdd';
@@ -19,7 +19,7 @@ import Overviews from './Pages/Reports/Overviews';
 import TrialBalance from './Pages/Reports/NeracaSaldo';
 import LaporanJurnal from './Pages/Reports/LaporanJurnal';
 import BukuBesarTable from './Pages/Reports/BukuBesarTable';
-import NeracaSaldo from './Pages/Reports/NeracaSaldo';
+import NeracaSaldo from './Pages/Reports/NeracaSaldo';  
 
 function App() {
   return (
