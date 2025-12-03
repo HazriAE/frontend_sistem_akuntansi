@@ -3,38 +3,45 @@ import Logo from './Logo';
 import Menu from './Menu';
 import UserProfile from './UserProfile';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { menuData } from './menuData';
+import { menuData } from "./menuData.js";
 
 
 const SideBar = () => {
-  const [activeMenu, setActiveMenu] = useState(1);
+  const [activeMenu, setActiveMenu] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  // useEffect(() => {
+  //   const findActiveMenu = () => {
+  //     // Cari exact match dulu
+  //     for (const menu of menuData) {
+  //       if (menu.path === location.pathname) {
+  //         return menu.id;
+  //       }
+  //     }
+  //     let longestMatch = null;
+  //     let longestMatchLength = 0;
+
+  //     for (const menu of menuData) {
+  //       if (location.pathname.startsWith(menu.path + '/')) {
+  //         if (menu.path.length > longestMatchLength) {
+  //           longestMatch = menu.id;
+  //           longestMatchLength = menu.path.length;
+  //         }
+  //       }
+  //     }
+
+  //     return longestMatch;
+  //   };
+
+  //   setActiveMenu(findActiveMenu());
+  // }, [location.pathname]);
 
   const handleMenuClick = (item) => {
     setActiveMenu(item.id);
     navigate(item.path);
   };
-  useEffect(() => {
-  const findActiveMenu = () => {
-    for (const menu of menuData) {
-      if (menu.type === 'link' && menu.path === location.pathname) {
-        return menu.id;
-      }
-      if (menu.type === 'dropdown' && menu.submenu) {
-        for (const submenu of menu.submenu) {
-          if (submenu.path === location.pathname) {
-            return submenu.id;
-          }
-        }
-      }
-    }
-    return null;
-  };
 
-  setActiveMenu(findActiveMenu());
-}, [location.pathname]);
-  
   return (
     <div className="w-64 h-screen bg-base-100 shadow-lg flex flex-col">
       <Logo />
