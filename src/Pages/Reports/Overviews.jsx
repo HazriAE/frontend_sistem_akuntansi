@@ -22,6 +22,12 @@ const dataReports = [
     desc: "Menampilkan apa yang dimiliki (aset), apa saja utangnya (liabilitas), dan apa yang sudah diinvestasikan ke perusahaan ini (ekuitas) pada tanggal tertentu.",
     path: "/reports/jurnal-umum"
   },
+  {
+    title: "Perubahan Equitas",
+    desc: "perubahan dalam ekuitas (modal pemilik) perusahaan selama periode akuntansi tertentu, seperti satu tahun, yang disebabkan oleh laba/rugi bersih, tambahan modal dari pemilik, dan penarikan modal oleh pemilik (dividen)",
+    path: "/reports/perubahan-equitas"
+  },
+  
 ]
 
 const Overviews = () => {

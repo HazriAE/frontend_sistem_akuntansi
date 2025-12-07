@@ -10,7 +10,6 @@ import Customer from './Pages/Customer';
 // import TransactionReturn from './pages/Transaction/TransactionReturn';
 // import AccountsCategory from './pages/Accounts/AccountsCategory';
 // import JournalEntry from './pages/Accounts/JournalEntry';
-// import Settings from './pages/Settings';
 import AccountsList from "./components/accounts/AccountsList";
 import JurnalUmum from './Pages/JurnalUmum';
 import JournalEntryForm from './Pages/JournalEntryForm';
@@ -20,6 +19,8 @@ import TrialBalance from './Pages/Reports/NeracaSaldo';
 import LaporanJurnal from './Pages/Reports/LaporanJurnal';
 import BukuBesarTable from './Pages/Reports/BukuBesarTable';
 import NeracaSaldo from './Pages/Reports/NeracaSaldo';  
+import LaporanPerubahanEkuitas from './Pages/Reports/PerubahanEquitas';
+import Settings from './Pages/Settings';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path='/reports/jurnal-umum' element={<LaporanJurnal />} />
           <Route path='/reports/neraca-saldo' element={<NeracaSaldo />} />
           <Route path='/reports/buku-besar' element={<BukuBesarTable />} />
+          <Route path='/reports/perubahan-equitas' element={<LaporanPerubahanEkuitas />} />
 
           
           {/* Supplier Routes - Path utama langsung ke list */}
@@ -55,7 +57,7 @@ function App() {
           {/* <Route path="/accounts/kategori" element={<AccountsCategory />} />
           <Route path="/accounts/jurnal_umum" element={<JournalEntry />} /> */}
           
-          {/* <Route path="/settings" element={<Settings />} /> */}
+          <Route path="/settings" element={<Settings />} />
         </Route>
 
         <Route path="*" element={<div className="p-8">404 - Halaman tidak ditemukan</div>} />

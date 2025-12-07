@@ -5,7 +5,7 @@ const Logo = () => {
         A
       </div>
       <div className="flex flex-col">
-        <h1 className="text-lg font-bold text-base-content">AdminPanel</h1>
+        <h1 className="text-lg font-bold text-base-content">Ace Hardware</h1>
         <p className="text-xs text-base-content/60">Management System</p>
       </div>
     </div>
