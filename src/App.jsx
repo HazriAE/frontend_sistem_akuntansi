@@ -21,6 +21,7 @@ import BukuBesarTable from './Pages/Reports/BukuBesarTable';
 import NeracaSaldo from './Pages/Reports/NeracaSaldo';  
 import LaporanPerubahanEkuitas from './Pages/Reports/PerubahanEquitas';
 import Settings from './Pages/Settings';
+import Supplier from './Pages/Supplier';
 
 function App() {
   return (
@@ -43,9 +44,9 @@ function App() {
 
           
           {/* Supplier Routes - Path utama langsung ke list */}
-          {/* <Route path="/supplier" element={<SupplierList />} />
-          <Route path="/supplier/add" element={<SupplierAdd />} />
-          <Route path="/supplier/category" element={<SupplierCategory />} /> */}
+          <Route path="/supplier" element={<Supplier />} />
+          {/* <Route path="/supplier/add" element={<SupplierAdd />} />
+          <Route path="/supplier/category" element={<SupplierCategory />} />  */}
           
           {/* Transaction Routes */}
           {/* <Route path="/transaction/purchase" element={<TransactionPurchase />} />
