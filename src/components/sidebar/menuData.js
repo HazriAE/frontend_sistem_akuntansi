@@ -6,7 +6,9 @@ import {
   MdAssessment, 
   MdSettings,
   MdAccountBalance,
-  MdLibraryBooks
+  MdLibraryBooks,
+  MdContacts,
+  MdManageAccounts
 } from 'react-icons/md';
 
 // Menu utama tanpa submenu dropdown
@@ -18,23 +20,29 @@ export const menuData = [
     path: "/dashboard"
   },
   {
-    id: 2,
-    label: "Customer",
-    icon: MdPeople,
-    path: "/customer"
+    id: 10,
+    label: "Contacts",
+    icon: MdContacts,
+    path: "/contacts"
   },
   {
-    id: 3,
-    label: "Supplier",
+    id: 2,
+    label: "Purchase",
     icon: MdLocalShipping,
-    path: "/supplier",
-    // Tabs untuk halaman Supplier
-    tabs: [
-      { id: 31, label: "Daftar Supplier", path: "/supplier" },
-      { id: 32, label: "Tambah Supplier", path: "/supplier/add" },
-      { id: 33, label: "Kategori", path: "/supplier/category" }
-    ]
+    path: "/purchase"
   },
+  // {
+  //   id: 3,
+  //   label: "Supplier",
+  //   icon: MdLocalShipping,
+  //   path: "/supplier",
+  //   // Tabs untuk halaman Supplier
+  //   tabs: [
+  //     { id: 31, label: "Daftar Supplier", path: "/supplier" },
+  //     { id: 32, label: "Tambah Supplier", path: "/supplier/add" },
+  //     { id: 33, label: "Kategori", path: "/supplier/category" }
+  //   ]
+  // },
   {
     id: 4,
     label: "Jurnal Entries",
@@ -48,8 +56,6 @@ export const menuData = [
     path: "/accounts",
     tabs: [
       { id: 51, label: "Daftar Akun", path: "/accounts" },
-      { id: 52, label: "Kategori Akun", path: "/accounts/kategori" },
-      { id: 53, label: "Jurnal Umum", path: "/accounts/jurnal_umum" }
     ]
   },
   {
@@ -70,5 +76,11 @@ export const menuData = [
     label: "Pengaturan",
     icon: MdSettings,
     path: "/settings"
+  },
+  {
+    id: 8,
+    label: "Item Manajemen",
+    icon: MdManageAccounts,
+    path: 'item-manajemen'
   }
 ];

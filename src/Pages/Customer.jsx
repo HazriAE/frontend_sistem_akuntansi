@@ -4,6 +4,7 @@ import { MdAdd, MdArrowBack, MdPeople, MdPersonAdd, MdHighlightOff, MdNewRelease
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import api from '../lib/axios';
+import CustomerForm from '../components/CustomerForm';
 
 // Validation Schema
 const validationSchema = Yup.object({
@@ -106,7 +107,7 @@ const Customer = () => {
       kode: '',
       nama: '',
       email: '',
-      telepon: '',
+      noHp: '',
       alamat: '',
       tipe: 'customer',
       aktif: true
@@ -278,9 +279,6 @@ const Customer = () => {
                 {/* Search */}
                 <div className="form-control flex-1 min-w-[200px]">
                   <div className="input-group">
-                    <span className="bg-base-200">
-                      <MdSearch size={20} />
-                    </span>
                     <input
                       type="text"
                       placeholder="Search by name or code..."
@@ -375,171 +373,13 @@ const Customer = () => {
 
       {/* ADD/EDIT CUSTOMER FORM */}
       {(mode === "add" || mode === "edit") && (
-        <div className="card bg-base-100 shadow-lg max-w-4xl mx-auto">
-          <div className="card-body">
-            <form onSubmit={formik.handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* Kode */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">Kode Customer</span>
-                </label>
-                <input 
-                  type="text"
-                  name="kode"
-                  className="input input-bordered"
-                  placeholder="AUTO (Kosongkan untuk auto-generate)"
-                  value={formik.values.kode}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
-
-              {/* Nama */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">
-                    Nama <span className="text-error">*</span>
-                  </span>
-                </label>
-                <input 
-                  type="text"
-                  name="nama"
-                  className={`input input-bordered ${formik.touched.nama && formik.errors.nama ? 'input-error' : ''}`}
-                  placeholder="Enter name"
-                  value={formik.values.nama}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.nama && formik.errors.nama && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">{formik.errors.nama}</span>
-                  </label>
-                )}
-              </div>
-
-              {/* Email */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">Email</span>
-                </label>
-                <input 
-                  type="email"
-                  name="email"
-                  className={`input input-bordered ${formik.touched.email && formik.errors.email ? 'input-error' : ''}`}
-                  placeholder="Enter email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.email && formik.errors.email && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">{formik.errors.email}</span>
-                  </label>
-                )}
-              </div>
-
-              {/* Telepon */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">
-                    Phone Number <span className="text-error">*</span>
-                  </span>
-                </label>
-                <input 
-                  type="text"
-                  name="telepon"
-                  className={`input input-bordered ${formik.touched.telepon && formik.errors.telepon ? 'input-error' : ''}`}
-                  placeholder="Enter phone number"
-                  value={formik.values.telepon}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.telepon && formik.errors.telepon && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">{formik.errors.telepon}</span>
-                  </label>
-                )}
-              </div>
-
-              {/* Tipe */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">
-                    Tipe <span className="text-error">*</span>
-                  </span>
-                </label>
-                <select
-                  name="tipe"
-                  className="select select-bordered"
-                  value={formik.values.tipe}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="customer">Customer</option>
-                  <option value="supplier">Supplier</option>
-                  <option value="both">Both</option>
-                </select>
-              </div>
-
-              {/* Status */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-semibold">Status</span>
-                </label>
-                <select
-                  name="aktif"
-                  className="select select-bordered"
-                  value={formik.values.aktif.toString()}
-                  onChange={(e) => formik.setFieldValue('aktif', e.target.value === 'true')}
-                >
-                  <option value="true">Active</option>
-                  <option value="false">Inactive</option>
-                </select>
-              </div>
-
-              {/* Alamat */}
-              <div className="form-control md:col-span-2">
-                <label className="label">
-                  <span className="label-text font-semibold">Alamat</span>
-                </label>
-                <textarea
-                  name="alamat"
-                  className="textarea textarea-bordered h-24"
-                  placeholder="Enter address"
-                  value={formik.values.alamat}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                ></textarea>
-              </div>
-
-              {/* Submit Button */}
-              <div className="md:col-span-2 flex justify-end gap-3 mt-4">
-                <button 
-                  type="button"
-                  className="btn btn-ghost"
-                  onClick={handleBack}
-                >
-                  Cancel
-                </button>
-                <button 
-                  type="submit" 
-                  className="btn btn-primary"
-                  disabled={createMutation.isPending || updateMutation.isPending}
-                >
-                  {(createMutation.isPending || updateMutation.isPending) ? (
-                    <>
-                      <span className="loading loading-spinner loading-sm"></span>
-                      Saving...
-                    </>
-                  ) : (
-                    mode === 'edit' ? 'Update Customer' : 'Save Customer'
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <CustomerForm 
+          mode={mode}
+          formik={formik}
+          createMutation={createMutation}
+          updateMutation={updateMutation}
+          handleBack={handleBack}
+        />
       )}
     </div>
   );

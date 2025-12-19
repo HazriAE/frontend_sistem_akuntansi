@@ -111,51 +111,6 @@ const AccountsList = () => {
         />
         
         <div className="drawer-content space-y-6">
-          {/* Actions */}
-          <div className="flex justify-end gap-3">
-            <button 
-              className="btn btn-primary"
-              onClick={() => setIsDrawerOpen(true)}
-            >
-              <MdAdd size={20} />
-              Buat Akun Baru
-            </button>
-            <button className="btn btn-info">
-              <MdAdd size={20} />
-              Buat Jurnal Umum
-            </button>
-          </div>
-
-          {/* Filter & Actions */}
-          <div className="card bg-base-100 shadow-sm">
-            <div className="card-body p-4">
-              <div className="flex justify-between items-center">
-                <div className="form-control">
-                  <label className="label cursor-pointer gap-3">
-                    <input
-                      type="checkbox"
-                      className="checkbox checkbox-primary"
-                      checked={showArchived}
-                      onChange={(e) => setShowArchived(e.target.checked)}
-                    />
-                    <span className="label-text font-medium">Tampilkan Arsip Akun</span>
-                  </label>
-                </div>
-                <button className="btn btn-primary">
-                  <span>Tindakan</span>
-                  <MdMoreVert size={20} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Info Saldo */}
-          <div className="alert alert-info">
-            <span className="text-sm">
-              Saldo di bawah berdasarkan tanggal <strong>{new Date().toLocaleDateString('id-ID')}</strong>, kecuali ada pernyataan lain
-            </span>
-          </div>
-
           {/* Table */}
           <div className="card bg-base-100 shadow-sm overflow-hidden">
             <div className="overflow-x-auto">

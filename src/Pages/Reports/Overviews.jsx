@@ -18,6 +18,11 @@ const dataReports = [
     path: "/reports/profit-loss"
   },
   {
+    title: "Laba rugi New",
+    desc: "Menampilkan apa yang dimiliki (aset), apa saja utangnya (liabilitas), dan apa yang sudah diinvestasikan ke perusahaan ini (ekuitas) pada tanggal tertentu.",
+    path: "/reports/laba-rugi-multistep"
+  },
+  {
     title: "Jurnal Umum",
     desc: "Menampilkan apa yang dimiliki (aset), apa saja utangnya (liabilitas), dan apa yang sudah diinvestasikan ke perusahaan ini (ekuitas) pada tanggal tertentu.",
     path: "/reports/jurnal-umum"
@@ -27,6 +32,11 @@ const dataReports = [
     desc: "perubahan dalam ekuitas (modal pemilik) perusahaan selama periode akuntansi tertentu, seperti satu tahun, yang disebabkan oleh laba/rugi bersih, tambahan modal dari pemilik, dan penarikan modal oleh pemilik (dividen)",
     path: "/reports/perubahan-equitas"
   },
+  {
+    title: "Laporan Arus Kas",
+    desc: "Aktivitas Arus Kas",
+    path: "/reports/arus-kas"
+  }
   
 ]
 

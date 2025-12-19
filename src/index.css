@@ -1,12 +1,174 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@100..900&display=swap");
+
 @import "tailwindcss";
 @plugin "daisyui";
 
-
-@theme {
-  --font-menu: "Inter", sans-serif;
+@plugin "daisyui/theme" {
+  name: "light";
+  default: false;
+  prefersdark: false;
+  color-scheme: "dark";
+  --color-base-100: oklch(27% 0.105 12.094);
+  --color-base-200: oklch(41% 0.159 10.272);
+  --color-base-300: oklch(45% 0.188 13.697);
+  --color-base-content: oklch(94% 0.03 12.58);
+  --color-primary: oklch(68% 0.169 237.323);
+  --color-primary-content: oklch(97% 0.013 236.62);
+  --color-secondary: oklch(65% 0.241 354.308);
+  --color-secondary-content: oklch(97% 0.014 343.198);
+  --color-accent: oklch(0% 0 0);
+  --color-accent-content: oklch(100% 0 0);
+  --color-neutral: oklch(41% 0.159 10.272);
+  --color-neutral-content: oklch(96% 0.015 12.422);
+  --color-info: oklch(70% 0.165 254.624);
+  --color-info-content: oklch(28% 0.091 267.935);
+  --color-success: oklch(76% 0.177 163.223);
+  --color-success-content: oklch(26% 0.051 172.552);
+  --color-warning: oklch(82% 0.189 84.429);
+  --color-warning-content: oklch(27% 0.077 45.635);
+  --color-error: oklch(71% 0.202 349.761);
+  --color-error-content: oklch(28% 0.109 3.907);
+  --radius-selector: 0rem;
+  --radius-field: 2rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1.5px;
+  --depth: 1;
+  --noise: 1;
 }
 
+
+/* Typography */
+@theme {
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-heading: Poppins, system-ui, sans-serif;
+}
+
+/* Colors */
+@theme {
+  --color-azko-primary: #FF6B35;
+  --color-azko-secondary: #004E89;
+  --color-azko-accent: #FFB703;
+  --color-azko-success: #06D6A0;
+  --color-azko-warning: #e92701;
+  --color-azko-error: #EF233C;
+
+  --color-azko-neutral-50: #F8F9FA;
+  --color-azko-neutral-100: #F1F3F5;
+  --color-azko-neutral-200: #E9ECEF;
+  --color-azko-neutral-300: #DEE2E6;
+  --color-azko-neutral-400: #CED4DA;
+  --color-azko-neutral-500: #ADB5BD;
+  --color-azko-neutral-600: #6C757D;
+  --color-azko-neutral-700: #495057;
+  --color-azko-neutral-800: #343A40;
+  --color-azko-neutral-900: #212529;
+
+  /* Radius, shadow */
+  --radius-azko: 12px;
+
+  --shadow-azko: 0 4px 14px 0 rgba(255, 107, 53, 0.15);
+  --shadow-azko-hover: 0 6px 20px 0 rgba(255, 107, 53, 0.25);
+}
+
+/* DaisyUI Themes: Azko Light */
+@layer base {
+  :root[data-theme="azko"] {
+    --p: #FF6B35;
+    --pc: #FFFFFF;
+    --pf: #E85A2A;
+
+    --s: #004E89;
+    --sc: #FFFFFF;
+    --sf: #003D6B;
+
+    --a: #FFB703;
+    --ac: #212529;
+    --af: #E6A502;
+
+    --n: #495057;
+    --nc: #FFFFFF;
+    --nf: #343A40;
+
+    --b1: #FFFFFF;
+    --b2: #F8F9FA;
+    --b3: #E9ECEF;
+    --bc: #212529;
+
+    --in: #0EA5E9;
+    --inc: #FFFFFF;
+
+    --su: #06D6A0;
+    --suc: #FFFFFF;
+
+    --wa: #FFB703;
+    --wac: #212529;
+
+    --er: #EF233C;
+    --erc: #FFFFFF;
+
+    --rounded-box: 1rem;
+    --rounded-btn: 0.75rem;
+    --rounded-badge: 1.5rem;
+    --animation-btn: 0.25s;
+    --animation-input: 0.2s;
+    --btn-text-case: capitalize;
+    --border-btn: 1px;
+    --tab-border: 1px;
+    --tab-radius: 0.5rem;
+  }
+}
+
+/* DaisyUI Themes: Azko Dark */
+@layer base {
+  :root[data-theme="azko-dark"] {
+    --p: #FF6B35;
+    --pc: #FFFFFF;
+    --pf: #E85A2A;
+
+    --s: #0077B6;
+    --sc: #FFFFFF;
+    --sf: #005F8F;
+
+    --a: #FFB703;
+    --ac: #212529;
+    --af: #E6A502;
+
+    --n: #343A40;
+    --nc: #F8F9FA;
+    --nf: #495057;
+
+    --b1: #1A1D23;
+    --b2: #24272E;
+    --b3: #2E3239;
+    --bc: #F8F9FA;
+
+    --in: #0EA5E9;
+    --inc: #FFFFFF;
+
+    --su: #06D6A0;
+    --suc: #FFFFFF;
+
+    --wa: #FFB703;
+    --wac: #212529;
+
+    --er: #EF233C;
+    --erc: #FFFFFF;
+
+    --rounded-box: 1rem;
+    --rounded-btn: 0.75rem;
+    --rounded-badge: 1.5rem;
+    --animation-btn: 0.25s;
+    --animation-input: 0.2s;
+    --btn-text-case: capitalize;
+    --border-btn: 1px;
+    --tab-border: 1px;
+    --tab-radius: 0.5rem;
+  }
+}
+
+/* Clean default styles */
 li {
   list-style: none;
 }

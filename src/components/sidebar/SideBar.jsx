@@ -10,33 +10,7 @@ const SideBar = () => {
   const [activeMenu, setActiveMenu] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-
-  // useEffect(() => {
-  //   const findActiveMenu = () => {
-  //     // Cari exact match dulu
-  //     for (const menu of menuData) {
-  //       if (menu.path === location.pathname) {
-  //         return menu.id;
-  //       }
-  //     }
-  //     let longestMatch = null;
-  //     let longestMatchLength = 0;
-
-  //     for (const menu of menuData) {
-  //       if (location.pathname.startsWith(menu.path + '/')) {
-  //         if (menu.path.length > longestMatchLength) {
-  //           longestMatch = menu.id;
-  //           longestMatchLength = menu.path.length;
-  //         }
-  //       }
-  //     }
-
-  //     return longestMatch;
-  //   };
-
-  //   setActiveMenu(findActiveMenu());
-  // }, [location.pathname]);
-
+  
   const handleMenuClick = (item) => {
     setActiveMenu(item.id);
     navigate(item.path);
