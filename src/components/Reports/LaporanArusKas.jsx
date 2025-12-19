@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { MdPrint, MdFileDownload, MdCalendarToday, MdTrendingUp, MdTrendingDown } from 'react-icons/md';
-import { FaMoneyBillWave, FaExchangeAlt, FaChartLine } from 'react-icons/fa';
-import { BiLineChart } from 'react-icons/bi';
+import { FaExchangeAlt } from 'react-icons/fa';
 import api from '../../lib/axios';
 
 const LaporanArusKas = () => {

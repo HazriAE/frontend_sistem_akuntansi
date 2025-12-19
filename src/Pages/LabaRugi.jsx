@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { MdDateRange, MdPrint, MdDownload, MdRefresh, MdTrendingUp, MdAssessment } from 'react-icons/md';
 import { FiFileText } from 'react-icons/fi';
-import api from '../../lib/axios';
-import LabaRugiMultipleStep from './LabaRugiMultipleStep';
+import api from '../lib/axios';
+import LabaRugiMultipleStep from '../components/Reports/LabaRugiMultipleStep'
 
 const LabaRugi = () => {
   // State untuk filter periode

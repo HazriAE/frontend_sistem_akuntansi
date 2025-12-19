@@ -3,8 +3,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { MdAdd, MdClose, MdRefresh } from 'react-icons/md';
-import PageWithTabs from '../components/PageWithTabs.jsx';
-import api from '../lib/axios.js';
+import PageWithTabs from '../PageWithTabs.jsx';
+import api from '../../lib/axios.js';
 
 // Fetch accounts for dropdown
 const fetchAccounts = async () => {

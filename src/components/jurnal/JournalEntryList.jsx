@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { MdExpandMore, MdExpandLess, MdEdit, MdDelete, MdCheckCircle, MdCancel, MdAdd } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import api from '../lib/axios';
+import api from '../../lib/axios';
 
 const JournalEntryList = () => {
   const [expandedRows, setExpandedRows] = useState({});

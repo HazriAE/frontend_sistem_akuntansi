@@ -1,5 +1,5 @@
-import PageWithTabs from "../../components/PageWithTabs"
-import CardReport from "./CardReport"
+import PageWithTabs from "../components/PageWithTabs"
+import CardReport from "../components/Reports/CardReport"
 
 const dataReports = [
   {
@@ -14,11 +14,6 @@ const dataReports = [
   },
   {
     title: "Laba rugi",
-    desc: "Menampilkan apa yang dimiliki (aset), apa saja utangnya (liabilitas), dan apa yang sudah diinvestasikan ke perusahaan ini (ekuitas) pada tanggal tertentu.",
-    path: "/reports/profit-loss"
-  },
-  {
-    title: "Laba rugi New",
     desc: "Menampilkan apa yang dimiliki (aset), apa saja utangnya (liabilitas), dan apa yang sudah diinvestasikan ke perusahaan ini (ekuitas) pada tanggal tertentu.",
     path: "/reports/laba-rugi-multistep"
   },
