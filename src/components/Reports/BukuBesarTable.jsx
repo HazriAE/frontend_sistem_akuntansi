@@ -4,36 +4,12 @@ import { BiLineChart } from 'react-icons/bi';
 import { MdAccountBalance } from 'react-icons/md';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/axios';
+import { data_offline } from '../../data/dataOflline';
 
 const BukuBesarTable = () => {
   const [expandedRows, setExpandedRows] = useState({});
 
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["laporan-buku-besar"],
-    queryFn: async () => {
-      const { data } = await api.get("/laporan/buku-besar-all");
-      return data.data;
-    },
-  });
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="alert alert-error">
-        <span>Gagal memuat data</span>
-        <button className="btn btn-sm" onClick={() => refetch()}>
-          Coba Lagi
-        </button>
-      </div>
-    );
-  }
+  const data = data_offline.buku_besar.data
 
   const toggleRow = (id, event) => {
     if (event) {

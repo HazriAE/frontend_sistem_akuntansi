@@ -1,71 +1,18 @@
 import api from '../lib/axios';
+import { data_offline } from '../data/dataOflline';
 
 // Dashboard Service
 export const dashboardService = {
-  // Fetch semua data untuk dashboard
-  async getDashboardData() {
-    try {
-      const [
-        jurnalRes,
-        bukuBesarRes,
-        neracaRes,
-        labaRugiRes,
-        arusKasRes,
-        perubahanEkuitasRes,
-      ] = await Promise.all([
-        api.get('/jurnal'),
-        api.get('/laporan/buku-besar-all'),
-        api.get('/laporan/neraca-saldo'),
-        api.get('/laporan/laba-rugi-multiple-step'),
-        api.get('/laporan/arus-kas'),
-        api.get('/laporan/perubahan-equitas'),
-      ]);
 
-      return {
-        jurnal: jurnalRes.data.data,
-        bukuBesar: bukuBesarRes.data.data,
-        neracaSaldo: neracaRes.data.data,
-        labaRugi: labaRugiRes.data.data,
-        arusKas: arusKasRes.data.data,
-        perubahanEkuitas: perubahanEkuitasRes.data.data,
-      };
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-      throw error;
-    }
+  getDashboardData: {
+    jurnal: data_offline.jurnal_umum.data,
+    bukuBesar: data_offline.buku_besar.data,
+    neracaSaldo: data_offline.neraca_saldo.data,
+    labaRugi: data_offline.laba_rugi.data,
+    arusKas: data_offline.arus_kas.data,
+    perubahanEkuitas: data_offline.perubahan_equitas.data,
   },
-
-  // Fetch individual endpoints
-  async getJurnal() {
-    const res = await api.get('/jurnal');
-    return res.data.data;
-  },
-
-  async getBukuBesar() {
-    const res = await api.get('/laporan/buku-besar-all');
-    return res.data.data;
-  },
-
-  async getNeracaSaldo() {
-    const res = await api.get('/laporan/neraca-saldo');
-    return res.data.data;
-  },
-
-  async getLabaRugi() {
-    const res = await api.get('/laporan/laba-rugi-multiple-step');
-    return res.data.data;
-  },
-
-  async getArusKas() {
-    const res = await api.get('/laporan/arus-kas');
-    return res.data.data;
-  },
-
-  async getPerubahanEkuitas() {
-    const res = await api.get('/laporan/perubahan-equitas');
-    return res.data.data;
-  },
-};
+}
 
 // Helper function untuk format currency
 export const formatCurrency = (amount) => {

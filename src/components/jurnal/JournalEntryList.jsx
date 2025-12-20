@@ -1,92 +1,21 @@
 import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { MdExpandMore, MdExpandLess, MdEdit, MdDelete, MdCheckCircle, MdCancel, MdAdd } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import api from '../../lib/axios';
+import { data_offline } from '../../data/dataOflline';
 
 const JournalEntryList = () => {
   const [expandedRows, setExpandedRows] = useState({});
   const [filterStatus, setFilterStatus] = useState('posted');
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
-  const { data: response, isLoading, isError, refetch } = useQuery({
-    queryKey: ['journals', filterStatus],
-    queryFn: async () => {
-      const params = new URLSearchParams();
-      if (filterStatus !== 'all') params.append('status', filterStatus);
-      
-      const { data } = await api.get(`/jurnal?${params}`);
-      return data;
-    }
-  });
-
-  const journals = response?.data ? [...response.data].sort((a, b) => a.tanggal - b.tanggal) : [];
-
-  const postMutation = useMutation({
-    mutationFn: async (id) => {
-      const { data } = await api.post(`/jurnal/${id}/post`);
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['journals']);
-      alert('Jurnal berhasil di-post!');
-    },
-    onError: (error) => {
-      alert(error.response?.data?.message || 'Gagal memposting jurnal');
-    }
-  });
-
-  const voidMutation = useMutation({
-    mutationFn: async ({ id, alasan }) => {
-      const { data } = await api.post(`/jurnal/${id}/void`, { alasan });
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['journals']);
-      alert('Jurnal berhasil di-void!');
-    },
-    onError: (error) => {
-      alert(error.response?.data?.message || 'Gagal void jurnal');
-    }
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: async (id) => {
-      const { data } = await api.delete(`/jurnal/${id}`);
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['journals']);
-      alert('Jurnal berhasil dihapus!');
-    },
-    onError: (error) => {
-      alert(error.response?.data?.message || 'Gagal menghapus jurnal');
-    }
-  });
+  const journals = data_offline.jurnal.data;
 
   const toggleRow = (id) => {
     setExpandedRows(prev => ({
       ...prev,
       [id]: !prev[id]
     }));
-  };
-
-  const handleEdit = (id) => {
-    navigate(`/journal_entries/${id}/edit`);
-  };
-
-  const handleDelete = (id) => {
-    if (window.confirm('Yakin ingin menghapus jurnal ini? Data yang sudah dihapus tidak bisa dikembalikan.')) {
-      deleteMutation.mutate(id);
-    }
-  };
-
-  const handleVoid = (id) => {
-    const alasan = prompt('Alasan void jurnal:');
-    if (alasan) {
-      voidMutation.mutate({ id, alasan });
-    }
   };
 
   const formatRupiah = (amount) => {
@@ -96,25 +25,6 @@ const JournalEntryList = () => {
       minimumFractionDigits: 0
     }).format(amount || 0);
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="alert alert-error">
-        <span>Gagal memuat data jurnal</span>
-        <button className="btn btn-sm" onClick={() => refetch()}>
-          Coba Lagi
-        </button>
-      </div>
-    );
-  }
 
   // Statistics
   const stats = {
@@ -273,7 +183,6 @@ const JournalEntryList = () => {
                               <button 
                                 className="btn btn-sm btn-error gap-1"
                                 onClick={() => handleVoid(journal._id)}
-                                disabled={voidMutation.isPending}
                               >
                                 <MdCancel size={16} />
                                 Void

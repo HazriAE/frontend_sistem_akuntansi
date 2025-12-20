@@ -1,25 +1,18 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { MdPrint, MdFileDownload, MdCalendarToday, MdTrendingUp, MdTrendingDown } from 'react-icons/md';
+import { MdPrint, MdFileDownload, MdCalendarToday } from 'react-icons/md';
 import { FaExchangeAlt } from 'react-icons/fa';
 import api from '../../lib/axios';
+import { data_offline } from '../../data/dataOflline';
+
+// Konfigurasi mode
+const IS_OFFLINE = import.meta.env.VITE_MODE === 'offline';
 
 const LaporanArusKas = () => {
   const [startDate, setStartDate] = useState(new Date(2025, 0, 2).toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState(new Date(2025, 3, 1).toISOString().split('T')[0]);
 
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ['laporan-arus-kas', startDate, endDate],
-    queryFn: async () => {
-      const params = new URLSearchParams();
-      if (startDate) params.append('startDate', startDate);
-      if (endDate) params.append('endDate', endDate);
-      
-      const { data } = await api.get(`/laporan/arus-kas?${params}`);
-      return data.data;
-    },
-    enabled: !!endDate
-  });
+  const data = data_offline.arus_kas.data
 
   const formatRupiah = (amount) => {
     const absolute = Math.abs(amount || 0);
@@ -38,27 +31,12 @@ const LaporanArusKas = () => {
   };
 
   const handleExport = () => {
+    if (IS_OFFLINE) {
+      alert('Fitur export tidak tersedia di mode offline');
+      return;
+    }
     alert('Export feature coming soon!');
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="alert alert-error">
-        <span>Gagal memuat data laporan</span>
-        <button className="btn btn-sm" onClick={() => refetch()}>
-          Coba Lagi
-        </button>
-      </div>
-    );
-  }
 
   const kasAwal = data?.kasAwal || 0;
   const kasAkhir = data?.kasAkhir || 0;
@@ -70,6 +48,13 @@ const LaporanArusKas = () => {
   return (
     <div className="min-h-screen bg-base-200 p-4 md:p-6">
       <div className="max-w-5xl mx-auto space-y-6">
+        
+        {/* Mode Indicator (opsional, bisa dihapus) */}
+        {IS_OFFLINE && (
+          <div className="alert alert-info">
+            <span>📊 Mode Demo - Menampilkan data contoh</span>
+          </div>
+        )}
         
         {/* Header Card */}
         <div className="card bg-gradient-to-br from-info to-primary text-primary-content shadow-xl">
@@ -93,6 +78,7 @@ const LaporanArusKas = () => {
                   className="input input-bordered bg-base-100 text-base-content"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
+                  disabled={IS_OFFLINE}
                 />
               </div>
 
@@ -105,12 +91,14 @@ const LaporanArusKas = () => {
                   className="input input-bordered bg-base-100 text-base-content"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
+                  disabled={IS_OFFLINE}
                 />
               </div>
 
               <button 
                 className="btn btn-accent"
                 onClick={() => refetch()}
+                disabled={IS_OFFLINE}
               >
                 <MdCalendarToday size={20} />
                 Tampilkan

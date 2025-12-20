@@ -4,6 +4,7 @@ import { MdDateRange, MdPrint, MdDownload, MdRefresh, MdTrendingUp, MdAssessment
 import { FiFileText } from 'react-icons/fi';
 import api from '../lib/axios';
 import LabaRugiMultipleStep from '../components/Reports/LabaRugiMultipleStep'
+import { data_offline } from '../data/dataOflline';
 
 const LabaRugi = () => {
   // State untuk filter periode
@@ -14,21 +15,7 @@ const LabaRugi = () => {
 
   const [tempPeriode, setTempPeriode] = useState(periode);
 
-  // Fetch data laba rugi
-  const { data: response, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['laba-rugi', periode],
-    queryFn: async () => {
-      const { data } = await api.get('/laporan/laba-rugi-multiple-step', {
-        params: {
-          dari: periode.dari,
-          sampai: periode.sampai
-        }
-      });
-      return data;
-    }
-  });
-
-  const labaRugiData = response?.data;
+  const labaRugiData = data_offline.laba_rugi.data;
 
   // Handle apply filter
   const handleApplyFilter = () => {
@@ -98,34 +85,6 @@ const LabaRugi = () => {
   const handleDownloadPDF = () => {
     alert('Fitur download PDF akan segera tersedia!');
   };
-
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="flex flex-col justify-center items-center h-screen">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-        <p className="mt-4 text-base-content/60">Memuat laporan laba rugi...</p>
-      </div>
-    );
-  }
-
-  // Error state
-  if (isError) {
-    return (
-      <div className="alert alert-error shadow-lg max-w-2xl mx-auto mt-8">
-        <div>
-          <MdAssessment size={24} />
-          <div>
-            <h3 className="font-bold">Gagal Memuat Laporan</h3>
-            <div className="text-xs">{error?.response?.data?.message || 'Terjadi kesalahan saat memuat data'}</div>
-          </div>
-        </div>
-        <button className="btn btn-sm btn-ghost" onClick={() => refetch()}>
-          <MdRefresh size={18} /> Coba Lagi
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">

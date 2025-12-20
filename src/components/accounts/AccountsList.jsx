@@ -4,22 +4,14 @@ import { MdAdd, MdLock, MdMoreVert } from 'react-icons/md';
 import DrawerAddAccount from "./DrawerAddAccount "
 import PageWithTabs from "../PageWithTabs";
 import api from '../../lib/axios';
-
-// API Functions
-const fetchAccounts = async () => {
-  const { data } = await api.get('/akun');
-  return data.accounts;
-};
+import { data_offline } from '../../data/dataOflline';
 
 const AccountsList = () => {
   const [showArchived, setShowArchived] = useState(false);
   const [selectedAccounts, setSelectedAccounts] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const { data: accounts = [], isLoading, isError, error, refetch } = useQuery({
-    queryKey: ['accounts'],
-    queryFn: fetchAccounts,
-  });
+  const accounts = data_offline.akun.accounts
 
   const filteredAccounts = showArchived 
     ? accounts 
@@ -76,28 +68,6 @@ const AccountsList = () => {
     return labels[kategori] || kategori;
   };
 
-  if (isLoading) {
-    return (
-      <PageWithTabs title="Daftar Akun" subtitle="Akun">
-        <div className="flex justify-center items-center h-64">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      </PageWithTabs>
-    );
-  }
-
-  if (isError) {
-    return (
-      <PageWithTabs title="Daftar Akun" subtitle="Akun">
-        <div className="alert alert-error">
-          <span>Error: {error?.message || 'Gagal memuat data akun'}</span>
-          <button className="btn btn-sm" onClick={() => refetch()}>
-            Coba Lagi
-          </button>
-        </div>
-      </PageWithTabs>
-    );
-  }
 
   return (
     <PageWithTabs title="Daftar Akun" subtitle="Akun">
@@ -208,21 +178,6 @@ const AccountsList = () => {
           </div>
         </div>
 
-        {/* Drawer */}
-        <div className="drawer-side z-50">
-          <label 
-            htmlFor="drawer-add-account" 
-            className="drawer-overlay"
-            onClick={() => setIsDrawerOpen(false)}
-          ></label>
-          <DrawerAddAccount 
-            onClose={() => setIsDrawerOpen(false)}
-            onSuccess={() => {
-              refetch();
-              setIsDrawerOpen(false);
-            }}
-          />
-        </div>
       </div>
     </PageWithTabs>
   );

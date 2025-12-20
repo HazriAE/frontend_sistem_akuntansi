@@ -24,32 +24,8 @@ import {
 const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
 
 const Dashboard = () => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['dashboardData'],
-    queryFn: dashboardService.getDashboardData,
-    refetchOnWindowFocus: false,
-  });
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-base-200">
-        <div className="text-center">
-          <span className="loading loading-spinner loading-lg text-primary"></span>
-          <p className="mt-4 text-lg">Memuat data dashboard...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-base-200">
-        <div className="alert alert-error max-w-md">
-          <span>Error: {error.message}</span>
-        </div>
-      </div>
-    );
-  }
+  
+  const data = dashboardService.getDashboardData
 
   const summary = processSummaryData(
     data.neracaSaldo,

@@ -49,16 +49,4 @@ export const menuData = [
       { id: 61, label: "Overview", path: "/reports" },
     ]
   },
-  {
-    id: 6,
-    label: "Item Manajemen",
-    icon: MdManageAccounts,
-    path: 'item-manajemen'
-  },
-  {
-    id: 7,
-    label: "Pengaturan",
-    icon: MdSettings,
-    path: "/settings"
-  },
 ];

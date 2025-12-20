@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { MdAdd, MdPeople, MdLocalShipping, MdSearch, MdEdit, MdDelete, MdArrowBack, MdHistory } from 'react-icons/md';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import api from '../lib/axios';
 import PageWithTabs from '../components/PageWithTabs';
+import { data_offline } from '../data/dataOflline';
 
 // Validation Schema
 const validationSchema = Yup.object({
@@ -22,90 +22,16 @@ const Contacts = () => {
   const [selectedContact, setSelectedContact] = useState(null);
   const [search, setSearch] = useState('');
   const [filterAktif, setFilterAktif] = useState('');
+  const [contacts, setContacts] = useState(data_offline.contacts.data.customer)
   
-  const queryClient = useQueryClient();
 
-  // Fetch contacts based on active tab
-  const { data: response, isLoading, isError, refetch } = useQuery({
-    queryKey: ['kontak', activeTab, filterAktif, search],
-    queryFn: async () => {
-      const params = new URLSearchParams();
-      params.append('tipe', activeTab);
-      if (filterAktif) params.append('aktif', filterAktif);
-      if (search) params.append('search', search);
-      
-      const { data } = await api.get(`/kontak?${params}`);
-      return data;
-    }
-  });
-
-  // Fetch contact detail with transactions
-  const { data: detailResponse } = useQuery({
-    queryKey: ['kontak-detail', selectedContact?._id],
-    queryFn: async () => {
-      const { data } = await api.get(`/kontak/${selectedContact._id}/transactions`);
-      return data;
-    },
-    enabled: mode === 'detail' && !!selectedContact?._id
-  });
-
-  const contacts = response?.data || [];
-  const contactDetail = detailResponse?.data;
-
+  function getContacts(param) {
+    return data_offline.contacts.data[param]
+  }
   // Statistics
   const active = contacts.filter(c => c.aktif === true).length;
   const inactive = contacts.filter(c => c.aktif === false).length;
   const totalContacts = contacts.length;
-
-  // Create mutation
-  const createMutation = useMutation({
-    mutationFn: async (values) => {
-      const { data } = await api.post('/kontak', values);
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['kontak']);
-      setMode('list');
-      formik.resetForm();
-      alert('Kontak berhasil ditambahkan!');
-    },
-    onError: (error) => {
-      alert(error.response?.data?.message || 'Gagal menambahkan kontak');
-    }
-  });
-
-  // Update mutation
-  const updateMutation = useMutation({
-    mutationFn: async ({ id, values }) => {
-      const { data } = await api.put(`/kontak/${id}`, values);
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['kontak']);
-      setMode('list');
-      setSelectedContact(null);
-      formik.resetForm();
-      alert('Kontak berhasil diupdate!');
-    },
-    onError: (error) => {
-      alert(error.response?.data?.message || 'Gagal mengupdate kontak');
-    }
-  });
-
-  // Delete mutation
-  const deleteMutation = useMutation({
-    mutationFn: async (id) => {
-      const { data } = await api.delete(`/kontak/${id}`);
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(['kontak']);
-      alert('Kontak berhasil dihapus!');
-    },
-    onError: (error) => {
-      alert(error.response?.data?.message || 'Gagal menghapus kontak');
-    }
-  });
 
   // Formik
   const formik = useFormik({
@@ -180,26 +106,6 @@ const Contacts = () => {
     }).format(amount || 0);
   };
 
-  if (isLoading && mode === 'list') {
-    return (
-      <PageWithTabs title="Kontak" subtitle="Manajemen">
-        <div className="flex justify-center items-center h-64">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      </PageWithTabs>
-    );
-  }
-
-  if (isError && mode === 'list') {
-    return (
-      <PageWithTabs title="Kontak" subtitle="Manajemen">
-        <div className="alert alert-error">
-          <span>Gagal memuat data kontak</span>
-        </div>
-      </PageWithTabs>
-    );
-  }
-
   return (
     <PageWithTabs title="Kontak" subtitle="Manajemen">
       <div className="space-y-6">
@@ -216,6 +122,7 @@ const Contacts = () => {
                   onClick={() => {
                     setActiveTab('customer');
                     setSearch('');
+                    setContacts(getContacts(activeTab));
                   }}
                 >
                   <MdPeople className="mr-2" />
@@ -227,6 +134,7 @@ const Contacts = () => {
                   onClick={() => {
                     setActiveTab('supplier');
                     setSearch('');
+                    setContacts(getContacts(activeTab));
                   }}
                 >
                   <MdLocalShipping className="mr-2" />

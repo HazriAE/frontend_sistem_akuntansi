@@ -4,24 +4,14 @@ import { MdPrint, MdFileDownload, MdCalendarToday, MdTrendingUp, MdTrendingDown,
 import { FaBalanceScale, FaMoneyBillWave, FaChartLine } from 'react-icons/fa';
 import { BiLineChart } from 'react-icons/bi';
 import api from '../../lib/axios';
+import { data_offline } from '../../data/dataOflline';
 
 const LaporanPerubahanEkuitas = () => {
   const [startDate, setStartDate] = useState(new Date(2025, 0, 2).toISOString().split('T')[0]);
   const [endDate, setEndDate] = useState(new Date(2025, 3, 1).toISOString().split('T')[0]);
   const [expandedRows, setExpandedRows] = useState({});
 
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ['laporan-ekuitas', startDate, endDate],
-    queryFn: async () => {
-      const params = new URLSearchParams();
-      if (startDate) params.append('startDate', startDate);
-      if (endDate) params.append('endDate', endDate);
-      
-      const { data } = await api.get(`/laporan/perubahan-equitas?${params}`);
-      return data.data;
-    },
-    enabled: !!endDate
-  });
+  const data = data_offline.perubahan_equitas.data
 
   const formatRupiah = (amount) => {
     return new Intl.NumberFormat('id-ID', {
@@ -46,25 +36,7 @@ const LaporanPerubahanEkuitas = () => {
     alert('Export feature coming soon!');
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="alert alert-error">
-        <span>Gagal memuat data laporan</span>
-        <button className="btn btn-sm" onClick={() => refetch()}>
-          Coba Lagi
-        </button>
-      </div>
-    );
-  }
-
+  
   const komponenEkuitas = data?.komponenEkuitas || [];
   const summary = data?.summary || {};
   const labaRugi = data?.labaRugiPeriode || 0;
