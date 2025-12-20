@@ -51,27 +51,35 @@ const LabaRugi = () => {
     let dari, sampai;
 
     switch (type) {
-      case 'today':
-        dari = sampai = today.toISOString().split('T')[0];
+      case 'Triwulan-1':
+        const year = 2025;
+
+        dari = new Date(year, 0, 2)   // 1 Januari 2025
+            .toISOString()
+            .split('T')[0];
+
+        sampai = new Date(year, 2, 32) // 31 Maret 2025
+            .toISOString()
+            .split('T')[0];
         break;
-      case 'this-week':
-        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-        dari = startOfWeek.toISOString().split('T')[0];
-        sampai = new Date().toISOString().split('T')[0];
-        break;
-      case 'this-month':
-        dari = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
-        sampai = new Date().toISOString().split('T')[0];
-        break;
-      case 'this-year':
-        dari = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0];
-        sampai = new Date().toISOString().split('T')[0];
-        break;
-      case 'last-month':
-        const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-        dari = lastMonth.toISOString().split('T')[0];
-        sampai = new Date(today.getFullYear(), today.getMonth(), 0).toISOString().split('T')[0];
-        break;
+      // case 'this-week':
+      //   const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+      //   dari = startOfWeek.toISOString().split('T')[0];
+      //   sampai = new Date().toISOString().split('T')[0];
+      //   break;
+      // case 'this-month':
+      //   dari = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+      //   sampai = new Date().toISOString().split('T')[0];
+      //   break;
+      // case 'this-year':
+      //   dari = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0];
+      //   sampai = new Date().toISOString().split('T')[0];
+      //   break;
+      // case 'last-month':
+      //   const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+      //   dari = lastMonth.toISOString().split('T')[0];
+      //   sampai = new Date(today.getFullYear(), today.getMonth(), 0).toISOString().split('T')[0];
+      //   break;
       default:
         return;
     }
@@ -169,33 +177,9 @@ const LabaRugi = () => {
           <div className="flex flex-wrap gap-2 mt-2">
             <button 
               className="btn btn-sm btn-ghost"
-              onClick={() => handleQuickFilter('today')}
+              onClick={() => handleQuickFilter('Triwulan-1')}
             >
-              Hari Ini
-            </button>
-            <button 
-              className="btn btn-sm btn-ghost"
-              onClick={() => handleQuickFilter('this-week')}
-            >
-              Minggu Ini
-            </button>
-            <button 
-              className="btn btn-sm btn-ghost"
-              onClick={() => handleQuickFilter('this-month')}
-            >
-              Bulan Ini
-            </button>
-            <button 
-              className="btn btn-sm btn-ghost"
-              onClick={() => handleQuickFilter('this-year')}
-            >
-              Tahun Ini
-            </button>
-            <button 
-              className="btn btn-sm btn-ghost"
-              onClick={() => handleQuickFilter('last-month')}
-            >
-              Bulan Lalu
+              Triwulan-1
             </button>
           </div>
 
@@ -247,102 +231,7 @@ const LabaRugi = () => {
       </div>
 
       {/* Summary Cards */}
-      {labaRugiData && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 print:hidden">
-          {/* Laba Kotor */}
-          <div className="card bg-gradient-to-br from-blue-50 to-blue-100 border-l-4 border-blue-500 shadow-lg">
-            <div className="card-body p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-blue-700 font-medium">Laba Kotor</p>
-                  <h3 className="text-2xl font-bold text-blue-900">
-                    {new Intl.NumberFormat('id-ID', {
-                      style: 'currency',
-                      currency: 'IDR',
-                      minimumFractionDigits: 0
-                    }).format(labaRugiData.labaKotor)}
-                  </h3>
-                  <p className="text-xs text-blue-600 mt-1">
-                    Margin: {labaRugiData.ratios.grossProfitMargin}%
-                  </p>
-                </div>
-                <div className="p-3 bg-blue-500/20 rounded-xl">
-                  <MdTrendingUp className="text-blue-700" size={28} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Laba Operasional */}
-          <div className="card bg-gradient-to-br from-green-50 to-green-100 border-l-4 border-green-500 shadow-lg">
-            <div className="card-body p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-green-700 font-medium">Laba Operasional</p>
-                  <h3 className="text-2xl font-bold text-green-900">
-                    {new Intl.NumberFormat('id-ID', {
-                      style: 'currency',
-                      currency: 'IDR',
-                      minimumFractionDigits: 0
-                    }).format(labaRugiData.labaOperasional)}
-                  </h3>
-                  <p className="text-xs text-green-600 mt-1">
-                    Margin: {labaRugiData.ratios.operatingProfitMargin}%
-                  </p>
-                </div>
-                <div className="p-3 bg-green-500/20 rounded-xl">
-                  <FiFileText className="text-green-700" size={28} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Laba Sebelum Pajak */}
-          <div className="card bg-gradient-to-br from-purple-50 to-purple-100 border-l-4 border-purple-500 shadow-lg">
-            <div className="card-body p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-purple-700 font-medium">Laba Sebelum Pajak</p>
-                  <h3 className="text-2xl font-bold text-purple-900">
-                    {new Intl.NumberFormat('id-ID', {
-                      style: 'currency',
-                      currency: 'IDR',
-                      minimumFractionDigits: 0
-                    }).format(labaRugiData.labaSebelumPajak)}
-                  </h3>
-                </div>
-                <div className="p-3 bg-purple-500/20 rounded-xl">
-                  <MdAssessment className="text-purple-700" size={28} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Laba Bersih */}
-          <div className="card bg-gradient-to-br from-orange-50 to-orange-100 border-l-4 border-primary shadow-lg">
-            <div className="card-body p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-orange-700 font-medium">Laba Bersih</p>
-                  <h3 className="text-2xl font-bold text-orange-900">
-                    {new Intl.NumberFormat('id-ID', {
-                      style: 'currency',
-                      currency: 'IDR',
-                      minimumFractionDigits: 0
-                    }).format(labaRugiData.labaBersih)}
-                  </h3>
-                  <p className="text-xs text-orange-600 mt-1">
-                    Margin: {labaRugiData.ratios.netProfitMargin}%
-                  </p>
-                </div>
-                <div className="p-3 bg-primary/20 rounded-xl">
-                  <MdTrendingUp className="text-primary" size={28} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      
 
       {/* Laporan Detail */}
       {labaRugiData ? (

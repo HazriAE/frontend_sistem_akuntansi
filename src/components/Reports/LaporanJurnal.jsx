@@ -5,8 +5,8 @@ import JournalReport from "./JournalReport";
 import HReportCard from "../../components/HReportCard";
 
 const LaporanJurnal = () => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
+  const [startDate, setStartDate] = useState(new Date(2025, 0, 2).toISOString().split('T')[0]);
+  const [endDate, setEndDate] = useState(new Date(2025, 3, 1).toISOString().split('T')[0]);
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['jurnal-umum', startDate, endDate],

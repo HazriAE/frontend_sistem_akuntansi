@@ -1,156 +1,327 @@
+import { useQuery } from '@tanstack/react-query';
+import { 
+  LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, 
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, 
+  Legend, ResponsiveContainer 
+} from 'recharts';
+import { 
+  FaMoneyBillWave, FaChartLine, FaWallet, 
+  FaBalanceScale, FaPercent 
+} from 'react-icons/fa';
+import { dashboardService, formatCurrency, formatCurrencyCompact } from '../api/dashboardApi.js';
+import {
+  processSummaryData,
+  processCashFlowData,
+  processRevenueExpenseData,
+  processAssetComposition,
+  processExpenseBreakdown,
+  processTopAssets,
+  processCashFlowTrend,
+  processEquityStructure,
+  calculateRatios,
+} from '../utils/dashboardUtils.js';
+
+const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
+
 const Dashboard = () => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['dashboardData'],
+    queryFn: dashboardService.getDashboardData,
+    refetchOnWindowFocus: false,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-base-200">
+        <div className="text-center">
+          <span className="loading loading-spinner loading-lg text-primary"></span>
+          <p className="mt-4 text-lg">Memuat data dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-base-200">
+        <div className="alert alert-error max-w-md">
+          <span>Error: {error.message}</span>
+        </div>
+      </div>
+    );
+  }
+
+  const summary = processSummaryData(
+    data.neracaSaldo,
+    data.labaRugi,
+    data.arusKas
+  );
+
+  const cashFlowData = processCashFlowData(data.arusKas);
+  const revenueExpenseData = processRevenueExpenseData(data.labaRugi);
+  const assetComposition = processAssetComposition(data.neracaSaldo);
+  const expenseBreakdown = processExpenseBreakdown(data.labaRugi);
+  const topAssets = processTopAssets(data.neracaSaldo);
+  const cashFlowTrend = processCashFlowTrend(data.arusKas);
+  const equityStructure = processEquityStructure(data.perubahanEkuitas);
+  const ratios = calculateRatios(data.neracaSaldo, data.labaRugi);
+
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-base-content mb-6">Dashboard</h1>
-      
-      {/* BAGIAN 1: STATS KARTU (STATISTICS CARDS) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        {/* Total Users */}
-        <div className="stats shadow bg-base-100">
-          <div className="stat">
-            <div className="stat-title">Total Users</div>
-            <div className="stat-value text-primary">1,234</div>
-            <div className="stat-desc">↗︎ 12% (30 days)</div>
-          </div>
-        </div>
-
-        {/* Active Suppliers */}
-        <div className="stats shadow bg-base-100">
-          <div className="stat">
-            <div className="stat-title">Active Suppliers</div>
-            <div className="stat-value text-secondary">456</div>
-            <div className="stat-desc">↗︎ 8% (30 days)</div>
-          </div>
-        </div>
-
-        {/* Transactions */}
-        <div className="stats shadow bg-base-100">
-          <div className="stat">
-            <div className="stat-title">Transactions</div>
-            <div className="stat-value text-accent">789</div>
-            <div className="stat-desc">↘︎ 3% (30 days)</div>
-          </div>
-        </div>
-
-        {/* Revenue */}
-        <div className="stats shadow bg-base-100">
-          <div className="stat">
-            <div className="stat-title">Revenue</div>
-            <div className="stat-value text-success">$12.5K</div>
-            <div className="stat-desc">↗︎ 15% (30 days)</div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-base-200 p-4 md:p-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-base-content mb-2">
+          Dashboard Keuangan
+        </h1>
+        <p className="text-base-content/60">
+          {data.labaRugi?.namaPerusahaan || 'AZKO Hardware'}
+        </p>
       </div>
-      
-      {/* BAGIAN 2: PERINGATAN (ALERTS) & QUICK ACTIONS BARU */}
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
+        <SummaryCard
+          icon={<FaWallet />}
+          title="Total Kas"
+          value={formatCurrencyCompact(summary.totalKas)}
+          color="bg-blue-500"
+        />
+        <SummaryCard
+          icon={<FaBalanceScale />}
+          title="Total Aset"
+          value={formatCurrencyCompact(summary.totalAset)}
+          color="bg-green-500"
+        />
+        <SummaryCard
+          icon={<FaMoneyBillWave />}
+          title="Liabilitas"
+          value={formatCurrencyCompact(summary.totalLiabilitas)}
+          color="bg-orange-500"
+        />
+        <SummaryCard
+          icon={<FaChartLine />}
+          title="Ekuitas"
+          value={formatCurrencyCompact(summary.totalEkuitas)}
+          color="bg-purple-500"
+        />
+        <SummaryCard
+          // icon={<FaTrendingUp />}
+          title="Laba Bersih"
+          value={formatCurrencyCompact(summary.labaBersih)}
+          color={summary.labaBersih >= 0 ? 'bg-green-500' : 'bg-red-500'}
+        />
+        <SummaryCard
+          icon={<FaPercent />}
+          title="GP Margin"
+          value={`${summary.grossProfitMargin.toFixed(2)}%`}
+          color="bg-indigo-500"
+        />
+      </div>
+
+      {/* Charts Row 1 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* Cash Flow Trend */}
+        <ChartCard title="Tren Kas">
+          <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={cashFlowTrend}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis tickFormatter={(val) => formatCurrencyCompact(val)} />
+              <Tooltip formatter={(val) => formatCurrency(val)} />
+              <Area 
+                type="monotone" 
+                dataKey="saldo" 
+                stroke="#3b82f6" 
+                fill="#3b82f680" 
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </ChartCard>
+
+        {/* Revenue vs Expense */}
+        <ChartCard title="Pendapatan vs Beban">
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={revenueExpenseData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="category" />
+              <YAxis tickFormatter={(val) => formatCurrencyCompact(val)} />
+              <Tooltip formatter={(val) => formatCurrency(val)} />
+              <Legend />
+              <Bar dataKey="Pendapatan" fill="#10b981" />
+              <Bar dataKey="Beban" fill="#ef4444" />
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartCard>
+      </div>
+
+      {/* Charts Row 2 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        
-        {/* Widget Peringatan Penting (Menggunakan 2/3 lebar di layar besar) */}
-        <div className="lg:col-span-2 card bg-warning shadow-xl">
-          <div className="card-body p-4 sm:p-6">
-            <h2 className="card-title text-warning-content text-xl">⚠️ Peringatan Penting (Action Required)</h2>
-            <div className="space-y-2 text-warning-content">
-              <div className="flex items-center gap-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.398 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                <p className="flex-1">
-                  **Faktur INV-2030** dari Supplier A akan **JATUH TEMPO HARI INI**. Jumlah: $950.00.
-                </p>
-                <button className="btn btn-sm btn-warning btn-outline">Bayar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Quick Actions (Menggunakan 1/3 lebar di layar besar) */}
-        <div className="lg:col-span-1 card bg-base-100 shadow-xl">
-          <div className="card-body p-4 sm:p-6">
-            <h2 className="card-title text-lg">Quick Actions</h2>
-            <div className="grid grid-cols-2 gap-3">
-              <button className="btn btn-sm btn-primary">Add Customer</button>
-              <button className="btn btn-sm btn-secondary">Add Supplier</button>
-              <button className="btn btn-sm btn-accent">New Transaction</button>
-              <button className="btn btn-sm btn-info">View Reports</button>
-            </div>
-          </div>
-        </div>
+        {/* Asset Composition */}
+        <ChartCard title="Komposisi Aset">
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={assetComposition}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={(entry) => `${entry.name}: ${formatCurrencyCompact(entry.value)}`}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {assetComposition.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(val) => formatCurrency(val)} />
+            </PieChart>
+          </ResponsiveContainer>
+        </ChartCard>
+
+        {/* Expense Breakdown */}
+        <ChartCard title="Breakdown Beban">
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={expenseBreakdown}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={80}
+                fill="#8884d8"
+                paddingAngle={5}
+                dataKey="value"
+                label={(entry) => entry.name}
+              >
+                {expenseBreakdown.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(val) => formatCurrency(val)} />
+            </PieChart>
+          </ResponsiveContainer>
+        </ChartCard>
+
+        {/* Cash Flow by Category */}
+        <ChartCard title="Arus Kas per Kategori">
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={cashFlowData} layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis type="number" tickFormatter={(val) => formatCurrencyCompact(val)} />
+              <YAxis type="category" dataKey="name" />
+              <Tooltip formatter={(val) => formatCurrency(val)} />
+              <Bar dataKey="value" fill="#8b5cf6">
+                {cashFlowData.map((entry, index) => (
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={entry.value >= 0 ? '#10b981' : '#ef4444'} 
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartCard>
       </div>
 
+      {/* Charts Row 3 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* Top Assets */}
+        <ChartCard title="Top 5 Aset Terbesar">
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={topAssets} layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis type="number" tickFormatter={(val) => formatCurrencyCompact(val)} />
+              <YAxis type="category" dataKey="name" width={150} />
+              <Tooltip formatter={(val) => formatCurrency(val)} />
+              <Bar dataKey="value" fill="#3b82f6" />
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartCard>
 
-      {/* BAGIAN 3: RECENT ACTIVITIES (TIMELINE) */}
-      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
-        
-        {/* Recent Activities (Timeline) */}
-        <div className="card bg-base-100 shadow-xl">
+        {/* Equity Structure */}
+        <ChartCard title="Struktur Ekuitas">
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={equityStructure}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
+              <YAxis tickFormatter={(val) => formatCurrencyCompact(val)} />
+              <Tooltip formatter={(val) => formatCurrency(val)} />
+              <Legend />
+              <Bar dataKey="saldoAwal" fill="#8b5cf6" name="Saldo Awal" />
+              <Bar dataKey="saldoAkhir" fill="#ec4899" name="Saldo Akhir" />
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartCard>
+      </div>
+
+      {/* Financial Ratios */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="card bg-base-100 shadow-lg">
           <div className="card-body">
-            <h2 className="card-title">🗓️ Recent Activities</h2>
-            
-            {/* Implementasi Timeline */}
-            <ul className="timeline timeline-vertical">
-              
-              {/* Aktivitas 1: New Customer (Success) */}
-              <li>
-                <div className="timeline-middle">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-3 6h6m-6-6h-6m6 0a6 6 0 100-12m6 12a6 6 0 100-12" /></svg>
-                </div>
-                <div className="timeline-end timeline-box bg-base-200 p-3 shadow-md">
-                  <time className="font-mono italic text-sm text-success">5 Menit Lalu</time>
-                  <div className="text-lg font-bold">Pelanggan Baru Terdaftar</div>
-                  <p className="text-sm">Akun **PT. Makmur Sejahtera** berhasil dibuat. <a href="/customer/450" className="link link-hover text-success">Lihat Detail</a></p>
-                </div>
-                <hr className="bg-success"/>
-              </li>
+            <h3 className="card-title text-sm">Current Ratio</h3>
+            <p className="text-2xl font-bold text-primary">{ratios.currentRatio}</p>
+            <p className="text-xs text-base-content/60">Aset Lancar / Liabilitas Lancar</p>
+          </div>
+        </div>
 
-              {/* Aktivitas 2: Payment Received (Info) */}
-              <li>
-                <hr className="bg-info"/>
-                <div className="timeline-middle">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-info" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
-                </div>
-                <div className="timeline-start timeline-box bg-base-200 p-3 shadow-md">
-                  <time className="font-mono italic text-sm text-info">1 Jam Lalu</time>
-                  <div className="text-lg font-bold">Pembayaran Diterima</div>
-                  <p className="text-sm">Pembayaran **$450.00** untuk Faktur **INV-9003** dari ABC Corp. <a href="/invoice/9003" className="link link-hover text-info">Lihat Faktur</a></p>
-                </div>
-                <hr className="bg-warning"/>
-              </li>
-              
-              {/* Aktivitas 3: New Vendor Bill (Warning) */}
-              <li>
-                <hr className="bg-warning"/>
-                <div className="timeline-middle">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2-4V6a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2z" /></svg>
-                </div>
-                <div className="timeline-end timeline-box bg-base-200 p-3 shadow-md">
-                  <time className="font-mono italic text-sm text-warning">Kemarin</time>
-                  <div className="text-lg font-bold">Tagihan Pemasok Baru</div>
-                  <p className="text-sm">Tagihan **#BLL-45** dari CV. Mitra Jaya telah dimasukkan. Jumlah **$1,200.00**. <a href="/bill/45" className="link link-hover text-warning">Bayar Sekarang</a></p>
-                </div>
-                <hr className="bg-base-300"/>
-              </li>
+        <div className="card bg-base-100 shadow-lg">
+          <div className="card-body">
+            <h3 className="card-title text-sm">Debt to Equity</h3>
+            <p className="text-2xl font-bold text-warning">{ratios.debtToEquity}</p>
+            <p className="text-xs text-base-content/60">Total Liabilitas / Total Ekuitas</p>
+          </div>
+        </div>
 
-              {/* Aktivitas 4: Inventory Update (Default) */}
-              <li>
-                <hr className="bg-base-300"/>
-                <div className="timeline-middle">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m4 4v10m8-10v10m0 0l-4-2m4 2l4-2" /></svg>
-                </div>
-                <div className="timeline-start timeline-box bg-base-200 p-3 shadow-md">
-                  <time className="font-mono italic text-sm">2 Hari Lalu</time>
-                  <div className="text-lg font-bold">Update Stok Inventaris</div>
-                  <p className="text-sm">Stok Produk **Buku Kas 001** disesuaikan. Perubahan: +50 unit.</p>
-                </div>
-              </li>
+        <div className="card bg-base-100 shadow-lg">
+          <div className="card-body">
+            <h3 className="card-title text-sm">Gross Profit Margin</h3>
+            <p className="text-2xl font-bold text-success">
+              {data.labaRugi?.labaKotor?.persentase || '0%'}
+            </p>
+            <p className="text-xs text-base-content/60">Laba Kotor / Penjualan</p>
+          </div>
+        </div>
 
-            </ul>
-            
-            <div className="card-actions justify-center mt-4">
-              <button className="btn btn-sm btn-outline">Lihat Semua Aktivitas</button>
-            </div>
+        <div className="card bg-base-100 shadow-lg">
+          <div className="card-body">
+            <h3 className="card-title text-sm">Net Profit Margin</h3>
+            <p className="text-2xl font-bold text-error">
+              {data.labaRugi?.labaBersih?.persentase || '0%'}
+            </p>
+            <p className="text-xs text-base-content/60">Laba Bersih / Penjualan</p>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+// Summary Card Component
+const SummaryCard = ({ icon, title, value, color }) => (
+  <div className="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow">
+    <div className="card-body p-4">
+      <div className="flex items-center gap-3">
+        <div className={`${color} text-white p-3 rounded-lg`}>
+          {icon}
+        </div>
+        <div className="flex-1">
+          <p className="text-xs text-base-content/60 uppercase">{title}</p>
+          <p className="text-lg font-bold truncate">{value}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+// Chart Card Component
+const ChartCard = ({ title, children }) => (
+  <div className="card bg-base-100 shadow-lg">
+    <div className="card-body">
+      <h2 className="card-title text-lg mb-4">{title}</h2>
+      {children}
+    </div>
+  </div>
+);
 
 export default Dashboard;

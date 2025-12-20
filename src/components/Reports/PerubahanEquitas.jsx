@@ -6,8 +6,8 @@ import { BiLineChart } from 'react-icons/bi';
 import api from '../../lib/axios';
 
 const LaporanPerubahanEkuitas = () => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
+  const [startDate, setStartDate] = useState(new Date(2025, 0, 2).toISOString().split('T')[0]);
+  const [endDate, setEndDate] = useState(new Date(2025, 3, 1).toISOString().split('T')[0]);
   const [expandedRows, setExpandedRows] = useState({});
 
   const { data, isLoading, isError, refetch } = useQuery({
