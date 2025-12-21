@@ -1,4 +1,4 @@
-const UserProfile = ({ name = "John Doe", role = "Admin" }) => {
+const UserProfile = ({ name = "Kelompok 5", role = "Admin" }) => {
   const initials = name
     .split(' ')
     .map(n => n[0])
@@ -12,7 +12,7 @@ const UserProfile = ({ name = "John Doe", role = "Admin" }) => {
           {initials}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-base-content truncate">{name}</p>
+          <p className="text-sm font-medium text-base-content truncate">Kelompok 5</p>
           <p className="text-xs text-base-content/60 truncate">{role}</p>
         </div>
       </div>
