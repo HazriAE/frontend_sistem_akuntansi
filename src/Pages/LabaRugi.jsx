@@ -8,8 +8,8 @@ import LabaRugiMultipleStep from '../components/Reports/LabaRugiMultipleStep'
 const LabaRugi = () => {
   // State untuk filter periode
   const [periode, setPeriode] = useState({
-    dari: new Date(new Date().getFullYear(), 0, 1).toISOString().split('T')[0], // 1 Jan tahun ini
-    sampai: new Date().toISOString().split('T')[0] // Hari ini
+    dari: new Date(2025, 0, 2).toISOString().split('T')[0], // 1 Jan tahun ini
+    sampai: new Date(2025, 2, 32).toISOString().split('T')[0] // Hari ini
   });
 
   const [tempPeriode, setTempPeriode] = useState(periode);
@@ -136,7 +136,6 @@ const LabaRugi = () => {
             <MdAssessment className="text-primary" size={36} />
             Laporan Laba Rugi
           </h1>
-          <p className="text-base-content/60 mt-1">Multiple Step Income Statement</p>
         </div>
 
         {/* Action Buttons */}

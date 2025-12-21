@@ -66,6 +66,7 @@ const Dashboard = () => {
   const equityStructure = processEquityStructure(data.perubahanEkuitas);
   const ratios = calculateRatios(data.neracaSaldo, data.labaRugi);
 
+
   return (
     <div className="min-h-screen bg-base-200 p-4 md:p-8">
       {/* Header */}

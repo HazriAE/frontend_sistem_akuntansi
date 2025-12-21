@@ -20,9 +20,8 @@ const LabaRugiMultipleStep = ({ data }) => {
       <div className="card-body p-6 md:p-8">
         {/* Header */}
         <div className="text-center mb-8 pb-6 border-b-2 border-primary">
-          <h1 className="text-3xl md:text-4xl font-bold text-base-content">{data.namaPerusahaan}</h1>
+          <h2 className="text-3xl font-bold">PT Aspirasi Hidup Indonesia tbk</h2>
           <h2 className="text-xl md:text-2xl font-semibold text-primary mt-2">{data.jenisLaporan}</h2>
-          <p className="text-sm text-base-content/60 mt-1">{data.metode}</p>
           <p className="text-base-content/60 mt-2">
             Periode {formatDate(data.periode.dari)} s/d {formatDate(data.periode.sampai)}
           </p>

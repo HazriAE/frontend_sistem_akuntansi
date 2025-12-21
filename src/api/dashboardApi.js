@@ -88,6 +88,7 @@ export const formatCurrencyCompact = (amount) => {
   
   const absAmount = Math.abs(amount);
   let value, suffix;
+  console.log(absAmount)
 
   if (absAmount >= 1000000000) {
     value = absAmount / 1000000000;
@@ -102,7 +103,9 @@ export const formatCurrencyCompact = (amount) => {
     return formatCurrency(amount);
   }
 
-  const formatted = `Rp ${value.toFixed(2)} ${suffix}`;
+  const result = Math.floor(value * 100) / 100;
+
+  const formatted = `Rp ${result} ${suffix}`;
   return amount < 0 ? `(${formatted})` : formatted;
 };
 

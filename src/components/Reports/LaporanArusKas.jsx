@@ -140,14 +140,13 @@ const LaporanArusKas = () => {
         <div className="card bg-base-100 shadow-sm">
           <div className="card-body py-4">
             <div className="text-center">
-              <h2 className="text-xl font-bold">Laporan Arus Kas (Metode Tidak Langsung)</h2>
-              <p className="text-sm text-base-content/60 mt-1">
-                Periode yang berakhir, {new Date(data?.periode?.sampai || endDate).toLocaleDateString('id-ID', {
-                  day: 'numeric',
-                  month: 'long',
-                  year: 'numeric'
-                })}
-              </p>
+              <h2 className="text-3xl font-bold">PT Aspirasi Hidup Indonesia tbk</h2>
+              <h2 className="text-2xl font-bold">Laporan Arus Kas</h2>
+              {startDate && (
+                <p className="text-sm text-base-content/60">
+                  Periode: {new Date(startDate).toLocaleDateString('id-ID')} s/d {new Date(endDate).toLocaleDateString('id-ID')}
+                </p>
+              )}
             </div>
           </div>
         </div>

@@ -27,7 +27,15 @@ const LaporanJurnal = () => {
   return (
     <div className="space-y-6">
       <HReportCard title="Jurnal Umum" setStartDate={setStartDate} setEndDate={setEndDate} startDate={startDate} endDate={endDate} refetch={refetch} />
-      <h2 className="text-2xl font-bold text-center">LAPORAN JURNAL</h2>
+      <div className="space-y-2 text-center">
+        <h2 className="text-3xl font-bold">PT Aspirasi Hidup Indonesia tbk</h2>
+        <h2 className="text-2xl font-bold">LAPORAN JURNAL</h2>
+        {startDate && (
+          <p className="text-sm text-base-content/60">
+            Periode: {new Date(startDate).toLocaleDateString('id-ID')} s/d {new Date(endDate).toLocaleDateString('id-ID')}
+          </p>
+        )}
+      </div>
 
       <JournalReport data={data} />
     </div>

@@ -157,6 +157,7 @@ const NeracaSaldo = () => {
         {/* Report Header */}
         <div className="card bg-base-100 shadow-sm">
           <div className="card-body text-center py-6">
+            <h2 className="text-3xl font-bold">PT Aspirasi Hidup Indonesia tbk</h2>
             <h2 className="text-2xl font-bold">NERACA SALDO</h2>
             <p className="text-sm text-base-content/60 mt-2">
               Per Tanggal: {new Date(data?.tanggal || endDate).toLocaleDateString('id-ID', {
